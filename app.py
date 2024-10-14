@@ -1,58 +1,27 @@
-import telebot
-import sqlite3
+from flask import Flask, render_template, request, redirect, url_for, flash
 
-# Замените TOKEN на токен вашего бота
-TOKEN = '7201322190:AAHaZrBlXbyWu3AXqBjS9dpXWxTjTQYAiEA'
-bot = telebot.TeleBot(TOKEN)
+app = Flask(__name__)
+app.secret_key = 'supersecretkey'
 
-# Вопросы и ответы
-questions = [
-    {"question": "Как зовут нашего кота?", "answer": "Маня"},
-    {"question": "Когда у нас годовщина?", "answer": "27 сентября"},
-]
+valid_key = "secret123"  # Ключ для входа
 
-user_answers = {}
+@app.route('/')
+def home():
+    return render_template('login.html')
 
-# Команда /start
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    chat_id = message.chat.id
-    user_answers[chat_id] = []
-    bot.send_message(chat_id, "Привет! Я задам тебе пару вопросов.")
-
-    # Первый вопрос
-    ask_question(chat_id, 0)
-
-# Задаём вопрос
-def ask_question(chat_id, question_index):
-    if question_index < len(questions):
-        question = questions[question_index]["question"]
-        bot.send_message(chat_id, question)
-        bot.register_next_step_handler_by_chat_id(chat_id, lambda msg: check_answer(msg, question_index))
+@app.route('/login', methods=['POST'])
+def login():
+    key = request.form['key']
+    if key == valid_key:
+        flash('Успешный вход!', 'success')
+        return redirect(url_for('dashboard'))
     else:
-        # Проверяем все ответы
-        check_all_answers(chat_id)
+        flash('Неверный ключ. Попробуйте снова.', 'danger')
+        return redirect(url_for('home'))
 
-# Проверяем ответ на конкретный вопрос
-def check_answer(message, question_index):
-    chat_id = message.chat.id
-    answer = message.text
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
-    if answer.lower() == questions[question_index]["answer"].lower():
-        user_answers[chat_id].append(True)
-    else:
-        user_answers[chat_id].append(False)
-
-    # Задаём следующий вопрос или проверяем результаты
-    ask_question(chat_id, question_index + 1)
-
-# Проверяем все ответы и выдаём ключ
-def check_all_answers(chat_id):
-    if all(user_answers[chat_id]):
-        bot.send_message(chat_id, "Поздравляю, ты ответил(а) правильно! Вот твой ключ: secret123")
-    else:
-        bot.send_message(chat_id, "Увы, что-то пошло не так. Попробуй снова.")
-
-# Запуск бота
-if __name__ == "__main__":
-    bot.polling()
+if __name__ == '__main__':
+    app.run(debug=True)
