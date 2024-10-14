@@ -7,8 +7,8 @@ bot = telebot.TeleBot(TOKEN)
 
 # Вопросы и ответы
 questions = [
-    {"question": "Как зовут моего питомца?", "answer": "Мурзик"},
-    {"question": "Когда у нас годовщина?", "answer": "14 февраля"},
+    {"question": "Как зовут нашего кота?", "answer": "Маня"},
+    {"question": "Когда у нас годовщина?", "answer": "27 сентября"},
 ]
 
 user_answers = {}
