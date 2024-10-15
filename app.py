@@ -17,7 +17,7 @@ def login():
         return redirect(url_for('dashboard'))
     else:
         flash('Неверный ключ. Попробуйте снова.', 'danger')
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
 @app.route('/dashboard')
 def dashboard():

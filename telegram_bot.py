@@ -12,6 +12,9 @@ questions = [
 ]
 
 user_answers = {}
+SECRET_KEY = "secret123"  # Ключ для логина
+SITE_URL = "http://127.0.0.1:5000/"  # Адрес сайта для логина
+
 
 # Команда /start
 @bot.message_handler(commands=['start'])
@@ -49,7 +52,10 @@ def check_answer(message, question_index):
 # Проверяем все ответы и выдаём ключ
 def check_all_answers(chat_id):
     if all(user_answers[chat_id]):
-        bot.send_message(chat_id, "Поздравляю, ты ответил(а) правильно! Вот твой ключ: secret123")
+        bot.send_message(chat_id, 
+            f"Поздравляю! Вот твой ключ: {SECRET_KEY}\n"
+            f"Перейди на {SITE_URL} и введи его, чтобы войти."
+        )
     else:
         bot.send_message(chat_id, "Увы, что-то пошло не так. Попробуй снова.")
 
