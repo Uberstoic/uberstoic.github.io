@@ -7,20 +7,21 @@
     <link rel="stylesheet" href="/static/style1.css">
 </head>
 <body>
-    <h2>Введите ключ для входа</h2>
-    <form id="loginForm">
-        <input type="text" id="key" placeholder="Введите ключ" required>
-        <button type="submit">Войти</button>
-    </form>
-
-    <p id="errorMessage" style="color: red; display: none;">Неверный ключ! Попробуйте снова.</p>
+    <div class="form-container">
+        <h2>Введите секретный код пожалуйста</h2>
+        <form id="loginForm">
+            <input type="text" id="key" placeholder="Введите ключ" required>
+            <button type="submit">Войти</button>
+        </form>
+        <p id="errorMessage" style="color: red; display: none;">Неверный ключ! Попробуйте снова.</p>
+    </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
 
             const enteredKey = document.getElementById('key').value;
-            const correctKey = 'secret123';  // Замените на ваш реальный ключ
+            const correctKey = 'businka';  // Замените на ваш реальный ключ
 
             if (enteredKey === correctKey) {
                 window.location.href = 'dashboard.html';  // Перенаправление на дашборд
